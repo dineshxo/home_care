@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_care/services/auth/authentication.dart';
 
 class Login extends StatefulWidget {
   final Function onTap;
@@ -9,8 +10,19 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  void login() async {
+    final auth = AuthServices();
+
+    try {
+      await auth.signInWithEmailPassword(
+          email: _emailController.text, password: _passwordController.text);
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +39,11 @@ class _LoginState extends State<Login> {
           TextField(
             controller: _passwordController,
           ),
-          TextButton(onPressed: () {}, child: Text('Login')),
+          TextButton(
+              onPressed: () {
+                login();
+              },
+              child: Text('Login')),
           TextButton(
               onPressed: () {
                 widget.onTap();
