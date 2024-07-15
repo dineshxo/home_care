@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "432650534768",
+    "project_id": "home-care-fb5a7",
+    "storage_bucket": "home-care-fb5a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:432650534768:android:1389b905c055eae74519b5",
+        "android_client_info": {
+          "package_name": "com.dineshxo.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVUr12Xzm1062yd-EV8aXAfNBdQf4XMcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
