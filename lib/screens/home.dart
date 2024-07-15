@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
                 Consumer<ThemeProvider>(
@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
                       decoration: BoxDecoration(
                           color: (themeProvider.isDarkMode)
                               ? const Color.fromARGB(255, 255, 255, 255)
-                              : Color.fromARGB(255, 213, 213, 213),
+                              : const Color.fromARGB(255, 213, 213, 213),
                           shape: BoxShape.circle),
                       child: IconButton(
                           onPressed: () {
@@ -84,7 +84,40 @@ class _HomeState extends State<Home> {
                   final auth = AuthServices();
                   auth.signOut();
                 },
-                child: Text('Logout'))
+                child: Text('Logout')),
+            Container(
+              height: 80,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(40)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${productList.length} Accessories.",
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                      Container(
+                        height: 70,
+                        width: 70,
+                        decoration: const BoxDecoration(
+                            color: Colors.black, shape: BoxShape.circle),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            )
           ]),
         ),
       ),
