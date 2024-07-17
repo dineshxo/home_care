@@ -47,7 +47,7 @@ class _BottomAddBarState extends State<BottomAddBar> {
                 },
                 child: const Icon(
                   Icons.add,
-                  color: Colors.white,
+                  color: Colors.limeAccent,
                   size: 35,
                 ),
               ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:home_care/components/add_product.dart';
 import 'package:home_care/components/bottom_add_bar.dart';
+import 'package:home_care/components/item_tile.dart';
 import 'package:home_care/models/products.dart';
 import 'package:home_care/services/auth/authentication.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
 import 'package:home_care/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   final String uid;
@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
 
   void _refreshProducts() {
     setState(() {
-      _products = FirestoreService.fetchProducts();
+      _products = FirestoreService.fetchProducts(widget.uid);
     });
 
     // Update count after products are fetched
@@ -125,68 +125,17 @@ class _HomeState extends State<Home> {
                   return Column(
                     children: [
                       Expanded(
-                        child: ListView.builder(
+                        child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 8.0,
+                            mainAxisSpacing: 8.0,
+                          ),
                           itemCount: products.length,
                           itemBuilder: (context, index) {
                             Products product = products[index];
-                            return Container(
-                              margin: const EdgeInsets.symmetric(vertical: 3),
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 243, 243, 243),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          'images/tv.png',
-                                          width: 100,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              product.name,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15),
-                                            ),
-                                            Text(
-                                              product.location,
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                            ),
-                                            Text(
-                                              DateFormat('yyyy-MM-dd').format(
-                                                  product.warrantyPeriod),
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                            ),
-                                            Text(
-                                              product.type.toString(),
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                            ),
-                                            Text(
-                                              "Valid til ${DateFormat('yyyy-MM-dd').format(product.warrantyPeriod)}",
-                                              style:
-                                                  const TextStyle(fontSize: 15),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            );
+                            return ItemTile(product: product);
                           },
                         ),
                       ),
@@ -222,6 +171,7 @@ class _HomeState extends State<Home> {
       builder: (context) {
         return AddProductBottomSheet(
           onProductAdded: _refreshProducts,
+          uid: widget.uid,
         );
       },
     );

@@ -5,8 +5,10 @@ import 'package:home_care/services/firestore/firestore_services.dart';
 
 class AddProductBottomSheet extends StatefulWidget {
   final Function onProductAdded;
+  final String uid;
 
-  const AddProductBottomSheet({Key? key, required this.onProductAdded})
+  const AddProductBottomSheet(
+      {Key? key, required this.onProductAdded, required this.uid})
       : super(key: key);
 
   @override
@@ -124,6 +126,7 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
                 }
 
                 Products newProduct = Products(
+                  uid: widget.uid,
                   name: _nameController.text,
                   location: _locationController.text,
                   purchasedDate: _selectedPurchaseDate!,
