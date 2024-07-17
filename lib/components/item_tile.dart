@@ -23,8 +23,32 @@ class _ItemTileState extends State<ItemTile> {
     return type.split('.').last;
   }
 
+  String getImagePath(String type) {
+    switch (type) {
+      case 'Television':
+        return 'images/tv.png';
+      case 'Refrigerator':
+        return 'images/fridge.png';
+      case 'AirConditioner':
+        return 'images/ac.png';
+      case 'WashingMachine':
+        return 'images/wm.png';
+      case 'Laptop':
+        return 'images/laptop.png';
+      case 'Speaker':
+        return 'images/speaker.png';
+      case 'VacuumCleaner':
+        return 'images/vaccum.png';
+      case 'Fan':
+        return 'images/fan.png';
+      default:
+        return 'images/tv.png'; // Default image if type is not recognized
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String typeName = getTypeName(widget.product.type.toString());
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -37,14 +61,14 @@ class _ItemTileState extends State<ItemTile> {
         );
       },
       child: Container(
-        margin: const EdgeInsets.only(top: 10.0),
+        margin: const EdgeInsets.only(top: 10.0, left: 5, right: 5),
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 243, 243, 243),
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 2,
+              spreadRadius: 1,
               blurRadius: 5,
               offset: const Offset(0, 3),
             ),
@@ -58,12 +82,12 @@ class _ItemTileState extends State<ItemTile> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.asset(
-                      'images/tv.png',
-                      height: 80,
-                      fit: BoxFit.cover,
+                  Center(
+                    child: ClipRRect(
+                      child: Image.asset(
+                        getImagePath(typeName),
+                        height: 80,
+                      ),
                     ),
                   ),
                   Padding(
@@ -84,7 +108,7 @@ class _ItemTileState extends State<ItemTile> {
                           style: const TextStyle(fontSize: 14),
                         ),
                         Text(
-                          getTypeName(widget.product.type.toString()),
+                          typeName,
                           style: const TextStyle(
                               fontSize: 12, fontWeight: FontWeight.bold),
                         ),
