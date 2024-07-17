@@ -25,5 +25,13 @@ List<Products> productList = [
     contactNumber: 1357924680,
     type: Category.Laptop,
   ),
+  Products(
+    name: 'Apple MacBook Pro',
+    location: 'Home Office',
+    purchasedDate: DateTime(2023, 1, 10),
+    warrantyPeriod: DateTime(2026, 1, 10),
+    contactNumber: 1357924680,
+    type: Category.Laptop,
+  ),
   // Add more Products as needed
 ];

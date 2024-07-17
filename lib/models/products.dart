@@ -13,6 +13,37 @@ class Products {
       required this.contactNumber,
       required this.warrantyPeriod,
       required this.type});
+
+  // Convert a Products instance to a map
+  Map<String, dynamic> toJSON() {
+    return {
+      'name': name,
+      'location': location,
+      'purchasedDate': _toDateOnly(purchasedDate),
+      'warrantyPeriod': _toDateOnly(warrantyPeriod),
+      'contactNumber': contactNumber,
+      'type': type.toString().split('.').last, // Store enum as a string
+    };
+  }
+
+  // Convert a Firestore document to a Products instance
+  factory Products.fromMap(Map<String, dynamic> map) {
+    return Products(
+      name: map['name'],
+      location: map['location'],
+      purchasedDate: DateTime.parse(map['purchasedDate']),
+      warrantyPeriod: DateTime.parse(map['warrantyPeriod']),
+      contactNumber: map['contactNumber'],
+      type: Category.values
+          .firstWhere((e) => e.toString().split('.').last == map['type']),
+    );
+  }
+
+  // Helper method to format DateTime to date-only string
+  String _toDateOnly(DateTime dateTime) {
+    return DateTime(dateTime.year, dateTime.month, dateTime.day)
+        .toIso8601String();
+  }
 }
 
 enum Category {
