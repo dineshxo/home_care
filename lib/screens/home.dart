@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:home_care/components/add_product.dart';
 import 'package:home_care/components/bottom_add_bar.dart';
 import 'package:home_care/components/item_tile.dart';
+import 'package:home_care/components/search_bar.dart'; // Ensure this is imported
 import 'package:home_care/models/products.dart';
-import 'package:home_care/services/auth/authentication.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
 import 'package:home_care/themes/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -44,17 +44,48 @@ class _HomeState extends State<Home> {
     });
   }
 
+  String _getGreeting(int hour) {
+    if (hour < 12) {
+      return "Good Morning";
+    } else if (hour < 17) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    int hour = DateTime.now().hour;
+    String greeting = _getGreeting(hour);
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Text(
-          "Home Care",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 25),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "$greeting,",
+              style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 20),
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            Text(
+              "Welcome to Home Care !",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w800,
+                  color: Theme.of(context).colorScheme.inversePrimary),
+            ),
+          ],
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 12.0, bottom: 12.0),
+            padding: const EdgeInsets.only(
+              right: 12.0,
+            ),
             child: Row(
               children: [
                 ClipRRect(
@@ -101,10 +132,14 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 5),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            searchBar(),
+            const SizedBox(
+              height: 5,
+            ),
+            const MainSearchBar(),
             const SizedBox(
               height: 3,
             ),
@@ -122,35 +157,24 @@ class _HomeState extends State<Home> {
 
                   List<Products> products = snapshot.data!;
 
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 8.0,
-                            mainAxisSpacing: 8.0,
-                          ),
-                          itemCount: products.length,
-                          itemBuilder: (context, index) {
-                            Products product = products[index];
-                            return ItemTile(product: product);
-                          },
-                        ),
-                      ),
-                    ],
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: products.length,
+                    itemBuilder: (context, index) {
+                      Products product = products[index];
+                      return ItemTile(product: product);
+                    },
                   );
                 },
               ),
             ),
-            Text("Logged in as ${widget.uid}"),
-            TextButton(
-              onPressed: () {
-                final auth = AuthServices();
-                auth.signOut();
-              },
-              child: Text('Logout'),
+            const SizedBox(
+              height: 10,
             ),
             BottomAddBar(
               productCount: _productsCount,
@@ -176,28 +200,4 @@ class _HomeState extends State<Home> {
       },
     );
   }
-}
-
-Container searchBar() {
-  return Container(
-    decoration: BoxDecoration(
-      color: const Color.fromARGB(255, 234, 234, 234),
-      borderRadius: BorderRadius.circular(30),
-    ),
-    child: const TextField(
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          Icons.search_sharp,
-          color: Color.fromARGB(255, 102, 102, 102),
-        ),
-        hintText: "Search..",
-        hintStyle: TextStyle(color: Colors.black),
-        border: InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(
-          vertical: 15,
-        ),
-      ),
-    ),
-  );
 }

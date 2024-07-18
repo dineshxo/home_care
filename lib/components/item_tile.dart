@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:home_care/models/products.dart';
 import 'package:home_care/screens/product.dart';
+import 'package:home_care/utils/product_utils.dart';
 
 class ItemTile extends StatefulWidget {
   final Products product;
@@ -11,44 +12,10 @@ class ItemTile extends StatefulWidget {
 }
 
 class _ItemTileState extends State<ItemTile> {
-  String _getDisplayName(String name) {
-    if (name.length > 17) {
-      return '${name.substring(0, 15)}..';
-    } else {
-      return name;
-    }
-  }
-
-  String getTypeName(String type) {
-    return type.split('.').last;
-  }
-
-  String getImagePath(String type) {
-    switch (type) {
-      case 'Television':
-        return 'images/tv.png';
-      case 'Refrigerator':
-        return 'images/fridge.png';
-      case 'AirConditioner':
-        return 'images/ac.png';
-      case 'WashingMachine':
-        return 'images/wm.png';
-      case 'Laptop':
-        return 'images/laptop.png';
-      case 'Speaker':
-        return 'images/speaker.png';
-      case 'VacuumCleaner':
-        return 'images/vaccum.png';
-      case 'Fan':
-        return 'images/fan.png';
-      default:
-        return 'images/tv.png'; // Default image if type is not recognized
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String typeName = getTypeName(widget.product.type.toString());
+    String typeName = ProductUtils.getTypeName(widget.product.type.toString());
+    Color color = ProductUtils.getColor(typeName);
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -63,14 +30,14 @@ class _ItemTileState extends State<ItemTile> {
       child: Container(
         margin: const EdgeInsets.only(top: 10.0, left: 5, right: 5),
         decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 243, 243, 243),
+          color: color,
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withOpacity(0.2),
               spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 3),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
@@ -85,7 +52,7 @@ class _ItemTileState extends State<ItemTile> {
                   Center(
                     child: ClipRRect(
                       child: Image.asset(
-                        getImagePath(typeName),
+                        ProductUtils.getImagePath(typeName),
                         height: 80,
                       ),
                     ),
@@ -97,7 +64,7 @@ class _ItemTileState extends State<ItemTile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _getDisplayName(widget.product.name),
+                          ProductUtils.getDisplayName(widget.product.name),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
@@ -105,12 +72,17 @@ class _ItemTileState extends State<ItemTile> {
                         ),
                         Text(
                           widget.product.location,
-                          style: const TextStyle(fontSize: 14),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
                         ),
                         Text(
                           typeName,
-                          style: const TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ],
                     ),
@@ -128,10 +100,11 @@ class _ItemTileState extends State<ItemTile> {
                   shape: BoxShape.circle,
                 ),
                 child: Transform.rotate(
-                  angle: 2.2, // Rotation angle in radians
+                  angle: 2.2,
                   child: const Icon(
                     Icons.arrow_back,
                     size: 20,
+                    color: Colors.black54,
                   ),
                 ),
               ),
