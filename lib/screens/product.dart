@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import 'package:home_care/components/call_button.dart';
 import 'package:home_care/models/products.dart';
 import 'package:home_care/utils/product_utils.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +22,14 @@ class _ProductPageState extends State<ProductPage> {
     String purchasedDate =
         DateFormat.yMMMd().format(widget.product.purchasedDate);
     String warranty = DateFormat.yMMMd().format(widget.product.warrantyPeriod);
+    String contactNumber = widget.product.contactNumber.toString();
+
+    bool checkWarrantyExpiration(DateTime warrantyPeriod) {
+      DateTime currentDate = DateTime.now();
+      return currentDate.isAfter(warrantyPeriod);
+    }
+
+    bool isExpired = checkWarrantyExpiration(widget.product.warrantyPeriod);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -35,60 +45,125 @@ class _ProductPageState extends State<ProductPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              imgPath,
-              width: double.infinity,
-              height: screenHeight / 3,
-            ),
-            Text(
-              widget.product.name,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-            ),
-            Text(type),
-            Text(widget.product.location),
-            Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(10),
-                  color: Colors.red,
-                  child: Row(
-                    children: [
-                      Container(
-                        color: Colors.amber,
-                        child: const Column(
-                          children: [
-                            Text("Usage"),
-                            Text(
-                              "Usage",
-                              style: TextStyle(fontSize: 20),
-                            )
-                          ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.asset(
+                imgPath,
+                width: double.infinity,
+                height: screenHeight / 2.5,
+              ),
+              Text(
+                widget.product.name,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                type,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: Theme.of(context).colorScheme.inversePrimary),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: screenHeight / 6,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.amberAccent.shade100,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Location - ",
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  widget.product.location,
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
+                                Text(
+                                  "Purchased $purchasedDate",
+                                  style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      Container(
-                        color: Colors.amber,
-                        child: const Column(
-                          children: [
-                            Text("Usage"),
-                            Text(
-                              "Usage",
-                              style: TextStyle(fontSize: 20),
-                            )
-                          ],
+                        const SizedBox(
+                          width: 10,
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Text(purchasedDate),
-            Text(warranty)
-          ],
+                        Expanded(
+                          child: Container(
+                            height: screenHeight / 6,
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: isExpired
+                                    ? Colors.redAccent.shade100
+                                    : Colors.greenAccent.shade100,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Warranty - ",
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  isExpired ? "Expired" : "Active",
+                                  style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87),
+                                ),
+                                Text(
+                                  "Coverage valid til  $warranty",
+                                  style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CallButton(contactNumber: contactNumber)
+            ],
+          ),
         ),
       ),
     );

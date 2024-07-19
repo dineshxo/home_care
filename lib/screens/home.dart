@@ -132,7 +132,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 5),
+        padding:
+            const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
