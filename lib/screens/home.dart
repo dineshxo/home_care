@@ -4,14 +4,14 @@ import 'package:home_care/components/bottom_add_bar.dart';
 import 'package:home_care/components/item_tile.dart';
 import 'package:home_care/components/search_bar.dart'; // Ensure this is imported
 import 'package:home_care/models/products.dart';
+import 'package:home_care/screens/profile.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
-import 'package:home_care/themes/theme_provider.dart';
-import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   final String uid;
+  final String email;
 
-  const Home({super.key, required this.uid});
+  const Home({super.key, required this.uid, required this.email});
 
   @override
   State<Home> createState() => _HomeState();
@@ -86,47 +86,24 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.only(
               right: 12.0,
             ),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.asset(
-                    'images/avatar.jpg',
-                    height: 45,
-                    width: 45,
-                    fit: BoxFit.cover,
-                  ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfilePage(
+                              email: widget.email,
+                            )));
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(40),
+                child: Image.asset(
+                  'images/avatar.jpg',
+                  height: 45,
+                  width: 45,
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(
-                  width: 5,
-                ),
-                Consumer<ThemeProvider>(
-                  builder: (context, themeProvider, child) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: themeProvider.isDarkMode
-                            ? const Color.fromARGB(255, 255, 255, 255)
-                            : const Color.fromARGB(255, 213, 213, 213),
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          themeProvider.toggleTheme();
-                        },
-                        icon: themeProvider.isDarkMode
-                            ? const Icon(
-                                Icons.light_mode,
-                                color: Colors.black87,
-                              )
-                            : const Icon(
-                                Icons.dark_mode,
-                                color: Color.fromARGB(221, 81, 81, 81),
-                              ),
-                      ),
-                    );
-                  },
-                ),
-              ],
+              ),
             ),
           ),
         ],
@@ -193,6 +170,7 @@ class _HomeState extends State<Home> {
     await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      showDragHandle: true,
       builder: (context) {
         return AddProductBottomSheet(
           onProductAdded: _refreshProducts,

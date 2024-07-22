@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:home_care/components/main_button.dart';
+import 'package:home_care/components/text_input_field.dart';
 import 'package:home_care/services/auth/authentication.dart';
 
 class Register extends StatefulWidget {
@@ -12,44 +14,168 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   void register() async {
     final auth = AuthServices();
 
-    try {
-      await auth.signUpWithEmailPassword(
-          email: _emailController.text, password: _passwordController.text);
-    } catch (e) {
-      print(e);
+    String email = _emailController.text;
+    String password = _passwordController.text;
+    String confirmPassword = _confirmPasswordController.text;
+
+    if (!email.contains('@')) {
+      _showErrorSnackbar(
+        "Invalid email address",
+      );
+      return;
     }
+
+    if (password.length < 8) {
+      _showErrorSnackbar("Password must be at least 8 characters");
+      return;
+    }
+
+    if (password != confirmPassword) {
+      _showErrorSnackbar("Passwords do not match");
+      return;
+    }
+
+    try {
+      await auth.signUpWithEmailPassword(email: email, password: password);
+      // Handle successful registration if needed
+    } catch (e) {
+      _showErrorSnackbar("Registration failed: ${e.toString()}");
+    }
+  }
+
+  void _showErrorSnackbar(String message) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style:
+            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Register"),
-      ),
+      appBar: AppBar(),
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Column(
-        children: [
-          TextField(
-            controller: _emailController,
-          ),
-          TextField(
-            controller: _passwordController,
-          ),
-          TextButton(
-              onPressed: () {
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextInputField(
+              controller: _emailController,
+              labelText: 'Email',
+              icon: Icons.email,
+            ),
+            const SizedBox(height: 10),
+            TextInputField(
+              controller: _passwordController,
+              labelText: 'Password',
+              icon: Icons.password,
+              obscureText: true,
+            ),
+            const SizedBox(height: 10),
+            TextInputField(
+              controller: _confirmPasswordController,
+              labelText: 'Confirm Password',
+              icon: Icons.password,
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
+            MainButton(
+              onTap: () {
                 register();
               },
-              child: Text('Login')),
-          TextButton(
-              onPressed: () {
-                widget.onTap();
-              },
-              child: Text('Register'))
-        ],
+              text: 'Register',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Already a Member?"),
+                TextButton(
+                  onPressed: () {
+                    widget.onTap();
+                  },
+                  child: Text(
+                    "Login",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/apple.png',
+                        height: 35,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Continue with Apple",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontSize: 16),
+                      ),
+                    ],
+                  )),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'images/google.png',
+                        height: 30,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "Continue with Google",
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontSize: 16),
+                      ),
+                    ],
+                  )),
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

@@ -17,7 +17,10 @@ class AuthCheck extends StatelessWidget {
           );
         }
         if (snapshot.hasData) {
-          return Home(uid: snapshot.data!.uid); // Pass the uid to Home widget
+          return Home(
+              uid: snapshot.data!.uid,
+              email: snapshot.data!.email
+                  .toString()); // Pass the uid to Home widget
         } else {
           return const LoginRegisterToggle(); // User is not signed in
         }

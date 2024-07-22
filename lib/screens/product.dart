@@ -83,7 +83,8 @@ class _ProductPageState extends State<ProductPage> {
                             height: screenHeight / 6,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                                color: Colors.amberAccent.shade100,
+                                color: Colors.amberAccent.shade100
+                                    .withOpacity(0.6),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -91,7 +92,7 @@ class _ProductPageState extends State<ProductPage> {
                                 const Text(
                                   "Location - ",
                                   style: TextStyle(
-                                    color: Colors.black54,
+                                    // color: Colors.black54,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -99,9 +100,9 @@ class _ProductPageState extends State<ProductPage> {
                                 Text(
                                   widget.product.location,
                                   style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   "Purchased $purchasedDate",
@@ -122,8 +123,9 @@ class _ProductPageState extends State<ProductPage> {
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 color: isExpired
-                                    ? Colors.redAccent.shade100
-                                    : Colors.greenAccent.shade100,
+                                    ? Colors.redAccent.shade100.withOpacity(0.6)
+                                    : Colors.greenAccent.shade100
+                                        .withOpacity(0.6),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +133,6 @@ class _ProductPageState extends State<ProductPage> {
                                 const Text(
                                   "Warranty - ",
                                   style: TextStyle(
-                                    color: Colors.black54,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -139,9 +140,9 @@ class _ProductPageState extends State<ProductPage> {
                                 Text(
                                   isExpired ? "Expired" : "Active",
                                   style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                                 Text(
                                   "Coverage valid til  $warranty",

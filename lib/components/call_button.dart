@@ -19,7 +19,7 @@ class CallButton extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-            color: Colors.black87, borderRadius: BorderRadius.circular(10)),
+            color: Colors.redAccent, borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: [
             const Text(
