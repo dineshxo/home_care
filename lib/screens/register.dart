@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:home_care/components/app_icon.dart';
 import 'package:home_care/components/main_button.dart';
 import 'package:home_care/components/text_input_field.dart';
 import 'package:home_care/services/auth/authentication.dart';
@@ -73,29 +74,7 @@ class _RegisterState extends State<Register> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black
-                            .withOpacity(0.2), // Shadow color with opacity
-                        spreadRadius: 1, // The spread radius
-                        blurRadius: 5, // The blur radius
-                        offset: const Offset(0, 2), // Offset for the shadow
-                      ),
-                    ],
-                    borderRadius:
-                        BorderRadius.circular(10), // Match the borderRadius
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Image.asset(
-                      'images/logo.png',
-                      fit: BoxFit.cover,
-                      height: 80,
-                    ),
-                  ),
-                ),
+                const AppIcon(),
                 const SizedBox(
                   height: 20,
                 ),
@@ -140,12 +119,12 @@ class _RegisterState extends State<Register> {
                       onPressed: () {
                         widget.onTap();
                       },
-                      child: Text(
+                      child: const Text(
                         "Login",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: Colors.blue,
                         ),
                       ),
                     ),
