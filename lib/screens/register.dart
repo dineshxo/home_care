@@ -68,113 +68,155 @@ class _RegisterState extends State<Register> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextInputField(
-              controller: _emailController,
-              labelText: 'Email',
-              icon: Icons.email,
-            ),
-            const SizedBox(height: 10),
-            TextInputField(
-              controller: _passwordController,
-              labelText: 'Password',
-              icon: Icons.password,
-              obscureText: true,
-            ),
-            const SizedBox(height: 10),
-            TextInputField(
-              controller: _confirmPasswordController,
-              labelText: 'Confirm Password',
-              icon: Icons.password,
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
-            MainButton(
-              onTap: () {
-                register();
-              },
-              text: 'Register',
-            ),
-            Row(
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text("Already a Member?"),
-                TextButton(
-                  onPressed: () {
-                    widget.onTap();
-                  },
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black
+                            .withOpacity(0.2), // Shadow color with opacity
+                        spreadRadius: 1, // The spread radius
+                        blurRadius: 5, // The blur radius
+                        offset: const Offset(0, 2), // Offset for the shadow
+                      ),
+                    ],
+                    borderRadius:
+                        BorderRadius.circular(10), // Match the borderRadius
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      'images/logo.png',
+                      fit: BoxFit.cover,
+                      height: 80,
                     ),
                   ),
                 ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'images/apple.png',
-                        height: 35,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Continue with Apple",
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 16),
-                      ),
-                    ],
-                  )),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Let\'s Create an Account.',
+                  style: TextStyle(fontSize: 23, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 30,
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.tertiary,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'images/google.png',
-                        height: 30,
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Continue with Google",
+                TextInputField(
+                  controller: _emailController,
+                  labelText: 'Email',
+                  icon: Icons.email,
+                ),
+                const SizedBox(height: 10),
+                TextInputField(
+                  controller: _passwordController,
+                  labelText: 'Password',
+                  icon: Icons.password,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 10),
+                TextInputField(
+                  controller: _confirmPasswordController,
+                  labelText: 'Confirm Password',
+                  icon: Icons.password,
+                  obscureText: true,
+                ),
+                const SizedBox(height: 20),
+                MainButton(
+                  onTap: () {
+                    register();
+                  },
+                  text: 'Register',
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Already a Member?"),
+                    TextButton(
+                      onPressed: () {
+                        widget.onTap();
+                      },
+                      child: Text(
+                        "Login",
                         style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 16),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
                       ),
-                    ],
-                  )),
+                    ),
+                  ],
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/apple.png',
+                            height: 35,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Continue with Apple",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                fontSize: 16),
+                          ),
+                        ],
+                      )),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(8)),
+                      child: Center(
+                          child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/google.png',
+                            height: 30,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Continue with Google",
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                fontSize: 16),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );
