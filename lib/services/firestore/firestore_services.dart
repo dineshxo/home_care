@@ -8,10 +8,11 @@ class FirestoreService {
     await products.add(product.toJSON());
   }
 
-  static Future<List<Products>> fetchProducts() async {
+  static Future<List<Products>> fetchProducts(String uid) async {
     CollectionReference productsCollection =
         FirebaseFirestore.instance.collection('products');
-    QuerySnapshot querySnapshot = await productsCollection.get();
+    QuerySnapshot querySnapshot =
+        await productsCollection.where('uid', isEqualTo: uid).get();
 
     return querySnapshot.docs.map((doc) {
       return Products.fromMap(doc.data() as Map<String, dynamic>);

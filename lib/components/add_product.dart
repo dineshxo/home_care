@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:home_care/components/text_input_field.dart';
 import 'package:intl/intl.dart';
 import 'package:home_care/models/products.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
 
 class AddProductBottomSheet extends StatefulWidget {
   final Function onProductAdded;
+  final String uid;
 
-  const AddProductBottomSheet({Key? key, required this.onProductAdded})
+  const AddProductBottomSheet(
+      {Key? key, required this.onProductAdded, required this.uid})
       : super(key: key);
 
   @override
@@ -43,18 +46,73 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            Row(
+              children: [
+                const Text(
+                  "Add Product",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Container(
+                    decoration: const BoxDecoration(
+                        color: Colors.green, shape: BoxShape.circle),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ))
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            DropdownButton<Category>(
+              focusColor: Theme.of(context).colorScheme.tertiary,
+              padding: const EdgeInsets.all(5),
+              hint: const Text(
+                'Select Category',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              value: _selectedCategory,
+              onChanged: (Category? newValue) {
+                setState(() {
+                  _selectedCategory = newValue!;
+                });
+              },
+              items: Category.values.map((Category category) {
+                return DropdownMenuItem<Category>(
+                  value: category,
+                  child: Text(category.toString().split('.').last),
+                );
+              }).toList(),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            TextInputField(
+              icon: Icons.abc,
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Product Name'),
+              labelText: 'Product Name',
             ),
-            TextField(
+            const SizedBox(
+              height: 10,
+            ),
+            TextInputField(
+              icon: Icons.location_city,
               controller: _locationController,
-              decoration: InputDecoration(labelText: 'Location'),
+              labelText: 'Location ',
             ),
-            TextField(
+            const SizedBox(
+              height: 10,
+            ),
+            TextInputField(
+              icon: Icons.call,
               controller: _contactNumberController,
-              decoration: InputDecoration(labelText: 'Contact Number'),
-              keyboardType: TextInputType.phone,
+              labelText: 'Service Center Contact Number',
+            ),
+            const SizedBox(
+              height: 10,
             ),
             ListTile(
               title: Text(_selectedPurchaseDate == null
@@ -63,6 +121,19 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
               trailing: Icon(Icons.calendar_today),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        colorScheme: const ColorScheme.light(
+                          primary: Colors.green,
+                          onPrimary: Colors.white,
+                          onSurface: Color.fromARGB(255, 1, 1, 1),
+                        ),
+                        textButtonTheme: const TextButtonThemeData(),
+                      ),
+                      child: child!,
+                    );
+                  },
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2000),
@@ -83,6 +154,19 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
               trailing: Icon(Icons.calendar_today),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
+                  builder: (BuildContext context, Widget? child) {
+                    return Theme(
+                      data: ThemeData.light().copyWith(
+                        colorScheme: const ColorScheme.light(
+                          primary: Colors.green,
+                          onPrimary: Colors.white,
+                          onSurface: Color.fromARGB(255, 1, 1, 1),
+                        ),
+                        textButtonTheme: const TextButtonThemeData(),
+                      ),
+                      child: child!,
+                    );
+                  },
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2000),
@@ -96,34 +180,20 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
                 }
               },
             ),
-            DropdownButton<Category>(
-              hint: Text('Select Category'),
-              value: _selectedCategory,
-              onChanged: (Category? newValue) {
-                setState(() {
-                  _selectedCategory = newValue!;
-                });
-              },
-              items: Category.values.map((Category category) {
-                return DropdownMenuItem<Category>(
-                  value: category,
-                  child: Text(category.toString().split('.').last),
-                );
-              }).toList(),
-            ),
-            ElevatedButton(
-              onPressed: () async {
+            GestureDetector(
+              onTap: () async {
                 if (_nameController.text.isEmpty ||
                     _locationController.text.isEmpty ||
                     _contactNumberController.text.isEmpty ||
                     _selectedPurchaseDate == null ||
                     _selectedWarrantyPeriod == null ||
                     _selectedCategory == null) {
-                  // Handle validation errors
+                  showErrorDialog(context);
                   return;
                 }
 
                 Products newProduct = Products(
+                  uid: widget.uid,
                   name: _nameController.text,
                   location: _locationController.text,
                   purchasedDate: _selectedPurchaseDate!,
@@ -136,11 +206,55 @@ class _AddProductBottomSheetState extends State<AddProductBottomSheet> {
                 widget.onProductAdded();
                 Navigator.of(context).pop();
               },
-              child: Text('Add Product'),
+              child: Container(
+                padding: const EdgeInsets.all(15),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(30)),
+                child: const Center(
+                    child: Text(
+                  'Add Product',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                )),
+              ),
             ),
+            const SizedBox(
+              height: 20,
+            )
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> showErrorDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          title: const Text(
+            'Please complete all required fields',
+            style: TextStyle(fontSize: 18),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'OK',
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.inversePrimary),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

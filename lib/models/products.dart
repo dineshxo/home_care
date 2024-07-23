@@ -1,4 +1,5 @@
 class Products {
+  String uid;
   String name;
   String location;
   DateTime purchasedDate;
@@ -7,7 +8,8 @@ class Products {
   Category type;
 
   Products(
-      {required this.name,
+      {required this.uid,
+      required this.name,
       required this.location,
       required this.purchasedDate,
       required this.contactNumber,
@@ -17,6 +19,7 @@ class Products {
   // Convert a Products instance to a map
   Map<String, dynamic> toJSON() {
     return {
+      'uid': uid,
       'name': name,
       'location': location,
       'purchasedDate': _toDateOnly(purchasedDate),
@@ -29,6 +32,7 @@ class Products {
   // Convert a Firestore document to a Products instance
   factory Products.fromMap(Map<String, dynamic> map) {
     return Products(
+      uid: map['uid'],
       name: map['name'],
       location: map['location'],
       purchasedDate: DateTime.parse(map['purchasedDate']),
@@ -49,19 +53,11 @@ class Products {
 enum Category {
   Television,
   Refrigerator,
-  Microwave,
   AirConditioner,
   WashingMachine,
   Laptop,
-  Smartphone,
-  Tablet,
   Speaker,
-  Router,
   VacuumCleaner,
   Fan,
-  Heater,
-  CoffeeMaker,
-  Blender,
-  Toaster,
-  Oven,
+  Other,
 }
