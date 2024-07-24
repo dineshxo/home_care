@@ -22,9 +22,7 @@ class _LoginState extends State<Login> {
     try {
       await auth.signInWithEmailPassword(
           email: _emailController.text, password: _passwordController.text);
-      // You can navigate to the home screen or show a success message here
     } catch (e) {
-      // Show error message in a Snackbar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(e.toString()),
@@ -36,7 +34,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Padding(
@@ -86,7 +83,7 @@ class _LoginState extends State<Login> {
                     ),
                     TextButton(
                         onPressed: () {
-                          widget.onTap!();
+                          widget.onTap();
                         },
                         child: const Text("Register",
                             style: TextStyle(
