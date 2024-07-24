@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
 class BottomAddBar extends StatefulWidget {
@@ -14,7 +13,7 @@ class BottomAddBar extends StatefulWidget {
 class _BottomAddBarState extends State<BottomAddBar> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 70,
       child: Stack(
         children: [

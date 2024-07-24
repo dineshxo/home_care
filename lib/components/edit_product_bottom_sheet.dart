@@ -1,31 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:home_care/components/text_input_field.dart';
+
 import 'package:intl/intl.dart';
 import 'package:home_care/models/products.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
 
-class AddProductBottomSheet extends StatefulWidget {
-  final Function onProductAdded;
-  final String uid;
+class EditProductBottomSheet extends StatefulWidget {
+  final Products product;
+  final Function onProductEdited;
 
-  const AddProductBottomSheet(
-      {super.key, required this.onProductAdded, required this.uid});
+  const EditProductBottomSheet(
+      {super.key, required this.product, required this.onProductEdited});
 
   @override
-  AddProductBottomSheetState createState() => AddProductBottomSheetState();
+  State<EditProductBottomSheet> createState() => _EditProductBottomSheetState();
 }
 
-class AddProductBottomSheetState extends State<AddProductBottomSheet> {
-  final _nameController = TextEditingController();
-  final _locationController = TextEditingController();
-  final _contactNumberController = TextEditingController();
+class _EditProductBottomSheetState extends State<EditProductBottomSheet> {
+  late TextEditingController _nameController;
+  late TextEditingController _locationController;
+  late TextEditingController _contactNumberController;
 
   DateTime? _selectedPurchaseDate;
   DateTime? _selectedWarrantyPeriod;
   Category? _selectedCategory;
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize controllers with product's current values
+    _nameController = TextEditingController(text: widget.product.name);
+    _locationController = TextEditingController(text: widget.product.location);
+    _contactNumberController =
+        TextEditingController(text: widget.product.contactNumber.toString());
+    _selectedPurchaseDate = widget.product.purchasedDate;
+    _selectedWarrantyPeriod = widget.product.warrantyPeriod;
+    _selectedCategory = widget.product.type;
+  }
+
+  @override
   void dispose() {
+    // Dispose controllers to avoid memory leaks
     _nameController.dispose();
     _locationController.dispose();
     _contactNumberController.dispose();
@@ -48,17 +63,19 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
             Row(
               children: [
                 const Text(
-                  "Add Product",
+                  "Edit Product",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Container(
+                    padding: const EdgeInsets.all(2),
                     decoration: const BoxDecoration(
-                        color: Colors.green, shape: BoxShape.circle),
+                        color: Colors.blue, shape: BoxShape.circle),
                     child: const Icon(
-                      Icons.add,
+                      Icons.edit,
+                      size: 20,
                       color: Colors.white,
                     ))
               ],
@@ -124,7 +141,7 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
                     return Theme(
                       data: ThemeData.light().copyWith(
                         colorScheme: const ColorScheme.light(
-                          primary: Colors.green,
+                          primary: Colors.blue,
                           onPrimary: Colors.white,
                           onSurface: Color.fromARGB(255, 1, 1, 1),
                         ),
@@ -134,7 +151,7 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
                     );
                   },
                   context: context,
-                  initialDate: DateTime.now(),
+                  initialDate: _selectedPurchaseDate ?? DateTime.now(),
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2100),
                 );
@@ -150,14 +167,14 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
               title: Text(_selectedWarrantyPeriod == null
                   ? 'Select Warranty Period'
                   : DateFormat('yyyy-MM-dd').format(_selectedWarrantyPeriod!)),
-              trailing: const Icon(Icons.calendar_today),
+              trailing:const Icon(Icons.calendar_today),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
                   builder: (BuildContext context, Widget? child) {
                     return Theme(
                       data: ThemeData.light().copyWith(
                         colorScheme: const ColorScheme.light(
-                          primary: Colors.green,
+                          primary: Colors.blue,
                           onPrimary: Colors.white,
                           onSurface: Color.fromARGB(255, 1, 1, 1),
                         ),
@@ -167,7 +184,7 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
                     );
                   },
                   context: context,
-                  initialDate: DateTime.now(),
+                  initialDate: _selectedWarrantyPeriod ?? DateTime.now(),
                   firstDate: DateTime(2000),
                   lastDate: DateTime(2100),
                 );
@@ -191,9 +208,10 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
                   return;
                 }
 
-                Products newProduct = Products(
-                  id: '',
-                  uid: widget.uid,
+                // Create updated product object
+                Products updatedProduct = Products(
+                  id: widget.product.id, // Use the existing ID
+                  uid: widget.product.uid, // Use the existing UID
                   name: _nameController.text,
                   location: _locationController.text,
                   purchasedDate: _selectedPurchaseDate!,
@@ -202,19 +220,21 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
                   type: _selectedCategory!,
                 );
 
-                await FirestoreService.addProduct(newProduct);
-                widget.onProductAdded();
+                // Call the FirestoreService to update the product
+                await FirestoreService.editProduct(updatedProduct);
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
+                widget.onProductEdited();
               },
               child: Container(
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Colors.blue,
                     borderRadius: BorderRadius.circular(30)),
                 child: const Center(
                     child: Text(
-                  'Add Product',
+                  'Update Product',
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
