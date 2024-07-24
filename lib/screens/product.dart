@@ -53,9 +53,9 @@ class _ProductPageState extends State<ProductPage> {
                 onPressed: () {
                   _showEditProductBottomSheet(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.edit,
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   size: 25,
                 )),
           ),
@@ -69,18 +69,18 @@ class _ProductPageState extends State<ProductPage> {
                   widget.onDelete(widget.product.id);
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete_forever_rounded,
-                  color: Color.fromARGB(255, 215, 16, 2),
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   size: 25,
                 )),
           ),
         ],
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_rounded,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),

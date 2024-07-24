@@ -23,9 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_rounded,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),
