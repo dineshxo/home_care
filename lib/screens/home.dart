@@ -4,6 +4,7 @@ import 'package:home_care/components/bottom_add_bar.dart';
 import 'package:home_care/components/item_tile.dart';
 import 'package:home_care/components/search_bar.dart'; // Ensure this is imported
 import 'package:home_care/models/products.dart';
+import 'package:home_care/screens/product.dart';
 import 'package:home_care/screens/profile.dart';
 import 'package:home_care/services/firestore/firestore_services.dart';
 
@@ -24,10 +25,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _refreshProducts();
+    refreshProducts();
   }
 
-  void _refreshProducts() {
+  void refreshProducts() {
     setState(() {
       _products = FirestoreService.fetchProducts(widget.uid);
     });
@@ -52,6 +53,11 @@ class _HomeState extends State<Home> {
     } else {
       return "Good Evening";
     }
+  }
+
+  void deleteProduct(String id) async {
+    await FirestoreService.deleteProduct(id);
+    refreshProducts();
   }
 
   @override
@@ -145,7 +151,20 @@ class _HomeState extends State<Home> {
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       Products product = products[index];
-                      return ItemTile(product: product);
+                      return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProductPage(
+                                  product: product,
+                                  onDelete: deleteProduct,
+                                  onProductEdited: refreshProducts,
+                                ),
+                              ),
+                            );
+                          },
+                          child: ItemTile(product: product));
                     },
                   );
                 },
@@ -173,7 +192,7 @@ class _HomeState extends State<Home> {
       showDragHandle: true,
       builder: (context) {
         return AddProductBottomSheet(
-          onProductAdded: _refreshProducts,
+          onProductAdded: refreshProducts,
           uid: widget.uid,
         );
       },

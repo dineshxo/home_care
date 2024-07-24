@@ -1,5 +1,6 @@
 class Products {
   String uid;
+  String id;
   String name;
   String location;
   DateTime purchasedDate;
@@ -9,6 +10,7 @@ class Products {
 
   Products(
       {required this.uid,
+      required this.id,
       required this.name,
       required this.location,
       required this.purchasedDate,
@@ -20,6 +22,7 @@ class Products {
   Map<String, dynamic> toJSON() {
     return {
       'uid': uid,
+      'id': id,
       'name': name,
       'location': location,
       'purchasedDate': _toDateOnly(purchasedDate),
@@ -30,8 +33,9 @@ class Products {
   }
 
   // Convert a Firestore document to a Products instance
-  factory Products.fromMap(Map<String, dynamic> map) {
+  factory Products.fromMap(Map<String, dynamic> map, String id) {
     return Products(
+      id: id,
       uid: map['uid'],
       name: map['name'],
       location: map['location'],

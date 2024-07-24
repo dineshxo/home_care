@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:home_care/components/call_button.dart';
+import 'package:home_care/components/edit_product_bottom_sheet.dart';
 import 'package:home_care/models/products.dart';
+
 import 'package:home_care/utils/product_utils.dart';
 import 'package:intl/intl.dart';
 
 class ProductPage extends StatefulWidget {
   final Products product;
-  const ProductPage({super.key, required this.product});
+  final Function(String) onDelete;
+  final Function onProductEdited;
+  const ProductPage(
+      {super.key,
+      required this.product,
+      required this.onDelete,
+      required this.onProductEdited});
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -35,6 +43,37 @@ class _ProductPageState extends State<ProductPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 5),
+            decoration:
+                const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+            child: IconButton(
+                onPressed: () {
+                  _showEditProductBottomSheet(context);
+                },
+                icon: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                  size: 25,
+                )),
+          ),
+          Container(
+            margin: const EdgeInsets.only(right: 15),
+            decoration:
+                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            child: IconButton(
+                onPressed: () {
+                  widget.onDelete(widget.product.id);
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.delete_forever_rounded,
+                  color: Colors.white,
+                  size: 25,
+                )),
+          ),
+        ],
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: const Icon(
@@ -167,6 +206,20 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _showEditProductBottomSheet(BuildContext context) async {
+    await showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (context) {
+        return EditProductBottomSheet(
+          product: widget.product,
+          onProductEdited: widget.onProductEdited,
+        );
+      },
     );
   }
 }
