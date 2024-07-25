@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.redAccent,
+                    color: Colors.redAccent.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(30)),
                 child: const Center(
                     child: Text(
