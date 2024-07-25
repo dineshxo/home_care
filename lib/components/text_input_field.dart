@@ -23,6 +23,7 @@ class TextInputField extends StatelessWidget {
       obscureText: obscureText,
       controller: controller,
       decoration: InputDecoration(
+        hintStyle: const TextStyle(fontWeight: FontWeight.w400),
         hintText: (labelText),
         prefixIcon: Icon(
           icon,
