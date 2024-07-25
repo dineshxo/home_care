@@ -1,4 +1,4 @@
-# 🏡 Home Care App
+#  Home Care App 🏡
 
 The Home Care App is a mobile application designed to help you effortlessly manage and track warranty information and service center contact numbers for your home devices. Built using Flutter for a seamless cross-platform experience, and powered by Firebase for secure cloud-based storage and authentication, this app ensures that all your important device information is easily accessible and well-protected.
 ![homecare](https://github.com/user-attachments/assets/6333dd47-1790-443e-8604-cae009954e69)
