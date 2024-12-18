@@ -107,6 +107,7 @@ class AddProductBottomSheetState extends State<AddProductBottomSheet> {
             ),
             TextInputField(
               icon: Icons.call,
+              keyboardType: TextInputType.number,
               controller: _contactNumberController,
               labelText: 'Service Center Contact Number',
             ),

@@ -23,9 +23,9 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Theme.of(context).colorScheme.surface,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_rounded,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),
@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 padding: const EdgeInsets.all(15),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.redAccent,
+                    color: Colors.redAccent.withOpacity(0.8),
                     borderRadius: BorderRadius.circular(30)),
                 child: const Center(
                     child: Text(

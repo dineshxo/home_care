@@ -124,6 +124,7 @@ class _EditProductBottomSheetState extends State<EditProductBottomSheet> {
             ),
             TextInputField(
               icon: Icons.call,
+              keyboardType: TextInputType.number,
               controller: _contactNumberController,
               labelText: 'Service Center Contact Number',
             ),
@@ -167,7 +168,7 @@ class _EditProductBottomSheetState extends State<EditProductBottomSheet> {
               title: Text(_selectedWarrantyPeriod == null
                   ? 'Select Warranty Period'
                   : DateFormat('yyyy-MM-dd').format(_selectedWarrantyPeriod!)),
-              trailing:const Icon(Icons.calendar_today),
+              trailing: const Icon(Icons.calendar_today),
               onTap: () async {
                 DateTime? pickedDate = await showDatePicker(
                   builder: (BuildContext context, Widget? child) {

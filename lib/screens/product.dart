@@ -46,39 +46,41 @@ class _ProductPageState extends State<ProductPage> {
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 5),
-            decoration:
-                const BoxDecoration(color: Colors.blue, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.tertiary,
+                shape: BoxShape.circle),
             child: IconButton(
                 onPressed: () {
                   _showEditProductBottomSheet(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.edit,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   size: 25,
                 )),
           ),
           Container(
             margin: const EdgeInsets.only(right: 15),
-            decoration:
-                const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.tertiary,
+                shape: BoxShape.circle),
             child: IconButton(
                 onPressed: () {
                   widget.onDelete(widget.product.id);
                   Navigator.pop(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   Icons.delete_forever_rounded,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                   size: 25,
                 )),
           ),
         ],
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_rounded,
-            color: Colors.blue,
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),
